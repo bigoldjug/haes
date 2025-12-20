@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>.haes1 Offline Encryptor</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    /* Fond et texte */
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 40px;
+      font-size: 2.5em;
+      text-shadow: 0 0 10px #ffffff;
+    }
+
+    input[type="file"], input[type="password"] {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: none;
+      width: 250px;
+      background-color: #222;
+      color: #fff;
+    }
+
+    input::placeholder {
+      color: #aaa;
+    }
+
+    button {
+      padding: 12px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #ffffff, #e0e0e0);
+      color: #000;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #cdcdcd;
+    }
+
+    /* Conteneur central */
+    body > * {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>.haes1</h1>
+
+  <input type="file" id="fileInput" />
+  <br><br>
+  <input type="password" id="password" placeholder="Mot de passe" />
+  <br><br>
+
+  <button onclick="encryptFile()">Encrypt → .haes1</button>
+  <button onclick="decryptFile()">Decrypt</button>
+
+  <script src="app.js"></script>
+</body>
+</html>
